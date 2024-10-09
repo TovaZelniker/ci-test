@@ -1,0 +1,26 @@
+name: 🧹 Node.js Linter
+
+on: push
+  
+jobs:
+  eslint-server:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - name: 📂 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: ⏬ Install server dependencies
+        run: npm install
+
+      - name: 💄 Run server linter
+        run: npx eslint .
