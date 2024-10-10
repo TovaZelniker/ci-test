@@ -2,16 +2,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { MongooseModule } from '@nestjs/mongoose';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let mongoServer: MongoMemoryServer;
 
   beforeEach(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [MongooseModule.forRoot(''), AppModule],
-    }).overrideProvider(MongooseModule)
-    .useValue({}).compile();
+      imports: [MongooseModule.forRoot(uri), AppModule],
+    }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
