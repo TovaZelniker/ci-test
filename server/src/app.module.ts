@@ -5,10 +5,7 @@ import { AppService } from './app.service';
 import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [process.env.MONGO_URI !== 'test'
-  ? MongooseModule.forRoot(process.env.MONGO_URI)
-  : MongooseModule.forRoot('mongodb://localhost/test'),
-CategoryModule,],
+  imports: [MongooseModule.forRoot(process.env.MONGO_URI), CategoryModule],
   controllers: [AppController],
   providers: [AppService],
 })

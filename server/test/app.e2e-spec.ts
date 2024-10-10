@@ -9,8 +9,9 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+      imports: [MongooseModule.forRoot('mongodb://localhost:27017/test'), AppModule],
+    }).overrideProvider(MongooseModule)
+    .useValue({}).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
