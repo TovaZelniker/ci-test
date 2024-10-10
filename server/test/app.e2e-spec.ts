@@ -9,7 +9,7 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [MongooseModule.forRoot('mongodb://localhost:27017/test', { useNewUrlParser: true }), AppModule],
+      imports: [MongooseModule.forRoot('mongodb://localhost:27017/test'), AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
