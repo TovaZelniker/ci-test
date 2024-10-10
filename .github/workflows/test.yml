@@ -2,6 +2,9 @@ name: 🧪 Run server tests
 
 on: push
 
+env:
+  MONGO_URI: test
+
 jobs:
   test:
     runs-on: ubuntu-latest
