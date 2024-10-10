@@ -2,9 +2,6 @@ name: 🧪 Run server tests
 
 on: push
 
-env:
-  MONGO_URI: test
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -25,7 +22,6 @@ jobs:
         - name: ⏬ Install dependencies
           run: |
             npm install
-            npm install --save-dev @shelf/jest-mongodb
             npm install --save-dev mongodb-memory-server
 
         - name: ✅ Run test
