@@ -21,6 +21,11 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  afterAll(async () => {
+    await app.close();
+    await mongoServer.stop(); // Stop in-memory MongoDB
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
