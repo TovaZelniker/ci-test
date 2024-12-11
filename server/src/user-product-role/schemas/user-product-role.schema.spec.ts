@@ -18,6 +18,9 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+beforeEach(async () => {
+  await UserProductRoleModel.deleteMany({});
+});
 
 describe('UserProductRole Schema Validations', () => {
   it('should create a valid UserProductRole document', () => {
@@ -74,9 +77,6 @@ describe('UserProductRole Schema Validations', () => {
   });
 
   it('should enforce unique index on userId, productId, and roleId', async () => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     const data = {
       userId: new Types.ObjectId(),
       productId: new Types.ObjectId(),
@@ -84,13 +84,13 @@ describe('UserProductRole Schema Validations', () => {
       workflowId: [new Types.ObjectId()],
     };
 
-    await UserProductRoleModel.create([data],{session});
+    await UserProductRoleModel.create(data);
 
     const duplicateEntry = data;
     let validationError;
 
     try {
-      await UserProductRoleModel.create([duplicateEntry], { session });
+      await UserProductRoleModel.create(data);
     } catch (error) {
       console.log(error);
       validationError = error;
