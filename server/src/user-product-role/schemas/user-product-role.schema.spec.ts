@@ -89,6 +89,7 @@ describe('UserProductRole Schema Validations', () => {
     try {
       await UserProductRoleModel.create(data);
     } catch (error) {
+      print(error)
       validationError = error;
     }
 
