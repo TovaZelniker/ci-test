@@ -86,13 +86,12 @@ describe('UserProductRole Schema Validations', () => {
 
     await UserProductRoleModel.create(data);
 
-    const duplicateEntry = data;
+    const duplicateEntry = new UserProductRoleModel(data);
     let validationError;
 
     try {
-      await UserProductRoleModel.create(data);
+      await duplicateEntry.save();
     } catch (error) {
-      console.log(error);
       validationError = error;
     }
 
