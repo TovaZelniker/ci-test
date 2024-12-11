@@ -87,7 +87,7 @@ describe('UserProductRole Schema Validations', () => {
     let validationError;
 
     try {
-      await UserProductRoleModel.create(duplicateEntry);
+      await UserProductRoleModel.create(data);
     } catch (error) {
       validationError = error;
     }
