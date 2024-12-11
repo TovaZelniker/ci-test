@@ -1,30 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
+
+import { BaseController } from '../controllers/base.controller';
+import { Category } from './schemas/category.schema';
 import { CategoryService } from './category.service';
-import { CategoryDto } from './dto/category.dto';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
+
 
 @Controller('category')
-export class CategoryController {
+export class CategoryController extends BaseController<Category, CreateCategoryDto, UpdateCategoryDto> {
 
-  constructor(private categoryService: CategoryService) { }  
-  @Get()
-  async get() {
-    return await this.categoryService.getAllCategories();
-  }  
-  @Get(':id')
-  async getById(@Param('id') id: string) {
-    return await this.categoryService.getCategoryById(id);
-  }  
-  @Post()
-  async create(@Body() createCategoryDto: CategoryDto) {
-    return await this.categoryService.create(createCategoryDto);
-  }  
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: CategoryDto) {
-    return this.categoryService.update(id, updateCategoryDto);
-  }  
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.categoryService.delete(id);
+  constructor(private readonly categoryService: CategoryService) {
+    super(categoryService);
   }
 
 }

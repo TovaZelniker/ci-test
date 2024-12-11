@@ -1,9 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { ConfigService } from '@nestjs/config';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { MongooseModule } from '@nestjs/mongoose';
+import * as request from 'supertest';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { AppModule } from './../src/app.module';
+
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -11,11 +14,26 @@ describe('AppController (e2e)', () => {
 
   beforeEach(async () => {
     mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
+    const URI = mongoServer.getUri();
+    const mockConfigService = {
+      get: jest.fn((key: string) => {
+        const mockEnv = {
+          MINIO_ENDPOINT: 'minio',
+          MINIO_PORT: '9000',
+          MINIO_SSL: 'false',
+          MINIO_ACCESSKEY: 'test-access-key',
+          MINIO_SECRETKEY: 'test-secret-key',
+        };
+        return mockEnv[key];
+      }),
+    };
 
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [MongooseModule.forRoot(uri), AppModule],
-    }).compile();
+      imports: [MongooseModule.forRoot(URI), AppModule],
+    })
+      .overrideProvider(ConfigService)
+      .useValue(mockConfigService)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
@@ -23,7 +41,7 @@ describe('AppController (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
-    await mongoServer.stop(); // Stop in-memory MongoDB
+    await mongoServer.stop();
   });
 
   it('/ (GET)', () => {
@@ -33,36 +51,3 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 });
-
-
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { INestApplication } from '@nestjs/common';
-// import { AppModule } from './../src/app.module';
-// import { MongooseModule } from '@nestjs/mongoose';
-// import { closeInMongodConnection, rootMongooseTestModule } from '@server/utils/mongo'; // Import helper functions for in-memory MongoDB testing
-
-// describe('AppController (e2e)', () => {
-//   let app: INestApplication;
-//   let moduleFixture: TestingModule;
-
-//   beforeAll(async () => {
-//     moduleFixture = await Test.createTestingModule({
-//       imports: [rootMongooseTestModule(), AppModule],
-//     }).compile();
-
-//     app = moduleFixture.createNestApplication();
-//     await app.init();
-//   });
-
-//   afterAll(async () => {
-//     await app.close();
-//     await closeInMongodConnection(); // Close the in-memory MongoDB connection
-//   });
-
-//   it('/ (GET)', () => {
-//     return request(app.getHttpServer())
-//       .get('/')
-//       .expect(200)
-//       .expect('Hello World!');
-//   });
-// });
