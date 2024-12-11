@@ -81,7 +81,7 @@ describe('UserProductRole Schema Validations', () => {
       workflowId: [new Types.ObjectId()],
     };
 
-    await UserProductRoleModel.create(data);
+    await UserProductRoleModel.save(data);
 
     const duplicateEntry = new UserProductRoleModel(data);
     let validationError;
