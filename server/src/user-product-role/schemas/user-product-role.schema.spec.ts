@@ -18,6 +18,10 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+beforeEach(async () => {
+  await UserProductRoleModel.deleteMany({});
+});
+
 describe('UserProductRole Schema Validations', () => {
   it('should create a valid UserProductRole document', () => {
     const data = {
@@ -82,11 +86,11 @@ describe('UserProductRole Schema Validations', () => {
 
     await UserProductRoleModel.create(data);
 
-    const duplicateEntry = new UserProductRoleModel(data);
+    const duplicateEntry = data;
     let validationError;
 
     try {
-      await duplicateEntry.save();
+      await UserProductRoleModel.create(duplicateEntry);
     } catch (error) {
       validationError = error;
     }
