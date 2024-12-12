@@ -18,6 +18,10 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+beforeEach(async () => {
+  await UserProductRoleModel.deleteMany({});
+});
+
 describe('UserProductRole Schema Validations', () => {
   it('should create a valid UserProductRole document', () => {
     const data = {
