@@ -79,20 +79,15 @@ describe('UserProductRole Schema Validations', () => {
       roleId: new Types.ObjectId(),
       workflowId: [new Types.ObjectId()],
     };
-
     await UserProductRoleModel.create(data);
-
-    const duplicateEntry = data;
+    const duplicateEntry = { ...data }; // Create a new object instead of reusing the same reference
     let validationError;
-
     try {
       await UserProductRoleModel.create(duplicateEntry);
     } catch (error) {
-      console.log(error);
       validationError = error;
     }
-    await new Promise(resolve => setTimeout(resolve, 500));
     expect(validationError).toBeDefined();
-    expect(validationError.code).toBe(11000);
+    expect(validationError.code).toBe(11000); // Unique index violation
   });
 });
