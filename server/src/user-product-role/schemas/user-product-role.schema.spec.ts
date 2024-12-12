@@ -80,7 +80,12 @@ describe('UserProductRole Schema Validations', () => {
       workflowId: [new Types.ObjectId()],
     };
     await UserProductRoleModel.create(data);
-    const duplicateEntry = { ...data }; // Create a new object instead of reusing the same reference
+    const duplicateEntry = {
+      userId: data.userId,
+      productId: data.productId,
+      roleId: data.roleId,
+      workflowId: [new Types.ObjectId()],
+    };
     let validationError;
     try {
       await UserProductRoleModel.create(duplicateEntry);
