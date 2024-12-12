@@ -91,7 +91,7 @@ describe('UserProductRole Schema Validations', () => {
       console.log(error);
       validationError = error;
     }
-
+    await new Promise(resolve => setTimeout(resolve, 500));
     expect(validationError).toBeDefined();
     expect(validationError.code).toBe(11000);
   });
