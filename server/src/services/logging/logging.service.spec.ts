@@ -50,8 +50,8 @@ describe('LoggingService', () => {
 
     service.writeToLog(errorMessage);
 
-    expect(mockWriteStream.write).toHaveBeenCalledTimes(3);
+    expect(mockWriteStream.write).toHaveBeenCalledTimes(2);
     expect(mockWriteStream.write).toHaveBeenNthCalledWith(1, `${mockDate}\n`);
-    expect(mockWriteStream.write).toHaveBeenNthCalledWith(2, `${util.format(errorMessage)}\n\n`);
+    expect(mockWriteStream.write).toHaveBeenNthCalledWith(1, `${util.format(errorMessage)}\n\n`);
   });
 });
