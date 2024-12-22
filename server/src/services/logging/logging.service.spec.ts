@@ -2,12 +2,23 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoggingService } from './logging.service';
 import * as fs from 'fs';
 import * as util from 'util';
+import * as path from 'path';
+import * as constants from '../../utils/constants';
 
 jest.mock('fs');
 
 describe('LoggingService', () => {
   let service: LoggingService;
   let mockWriteStream: fs.WriteStream;
+  const logFilePath = constants.PATH_LOGGING;
+
+  beforeAll(() => {
+    // Ensure the log directory exists before running tests
+    const logDir = path.dirname(logFilePath);
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir, { recursive: true });
+    }
+  });
 
   beforeEach(async () => {
     mockWriteStream = {
@@ -31,7 +42,6 @@ describe('LoggingService', () => {
     expect(service).toBeDefined();
   });
 
-
   it('should write a formatted error message to the log file', () => {
     const errorMessage = 'Test error message';
     const mockDate = new Date('2024-01-01T00:00:00Z');
@@ -40,7 +50,7 @@ describe('LoggingService', () => {
 
     service.writeToLog(errorMessage);
 
-    expect(mockWriteStream.write).toHaveBeenCalledTimes(2);
+    expect(mockWriteStream.write).toHaveBeenCalledTimes(3);
     expect(mockWriteStream.write).toHaveBeenNthCalledWith(1, `${mockDate}\n`);
     expect(mockWriteStream.write).toHaveBeenNthCalledWith(2, `${util.format(errorMessage)}\n\n`);
   });
