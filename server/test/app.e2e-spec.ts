@@ -6,7 +6,7 @@ import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { AppModule } from './../src/app.module';
-
+import { LoggingService } from '../src/services/logging/logging.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -28,11 +28,19 @@ describe('AppController (e2e)', () => {
       }),
     };
 
+    // Mocking LoggingService
+    const mockLoggingService = {
+      writeToLog: jest.fn(),
+    };
+    
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [MongooseModule.forRoot(URI), AppModule],
     })
       .overrideProvider(ConfigService)
       .useValue(mockConfigService)
+      .overrideProvider(LoggingService)
+      .useValue(mockLoggingService) // Use mocked LoggingService
       .compile();
 
     app = moduleFixture.createNestApplication();

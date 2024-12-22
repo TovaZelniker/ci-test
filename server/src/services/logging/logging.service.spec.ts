@@ -2,23 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoggingService } from './logging.service';
 import * as fs from 'fs';
 import * as util from 'util';
-import * as path from 'path';
-import * as constants from '../../utils/constants';
 
 jest.mock('fs');
 
 describe('LoggingService', () => {
   let service: LoggingService;
   let mockWriteStream: fs.WriteStream;
-  const logFilePath = constants.PATH_LOGGING;
-
-  beforeAll(() => {
-    // Ensure the log directory exists before running tests
-    const logDir = path.dirname(logFilePath);
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir, { recursive: true });
-    }
-  });
 
   beforeEach(async () => {
     mockWriteStream = {
@@ -41,6 +30,7 @@ describe('LoggingService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
 
   it('should write a formatted error message to the log file', () => {
     const errorMessage = 'Test error message';
