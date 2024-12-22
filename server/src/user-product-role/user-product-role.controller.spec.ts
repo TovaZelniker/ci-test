@@ -7,8 +7,8 @@ import { UserProductRoleService } from './user-product-role.service';
 const result = [{ id: '1', userId: 'A' }];
 
 const mockUserProductRoleService = {
-  getByUser: jest.fn().mockResolvedValue(result),
-  getByProduct: jest.fn().mockResolvedValue(result)
+  getProductsByUserId: jest.fn().mockResolvedValue(result),
+  getUsersByProductId: jest.fn().mockResolvedValue(result)
 };
 
 describe('UserProductRoleController', () => {
@@ -35,21 +35,21 @@ describe('UserProductRoleController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('getByUser', () => {
+  describe('getProductsByUserId', () => {
     it('should return an array of products by users', async () => {
       const userId = new Types.ObjectId();
 
-      expect(await controller.getByUser(userId)).toBe(result);
-      expect(service.getByUser).toHaveBeenCalledWith(userId);
+      expect(await controller.getProductsByUser(userId)).toBe(result);
+      expect(service.getProductsByUserId).toHaveBeenCalledWith(userId);
     });
   });
 
-  describe('getByProduct', () => {
+  describe('getUsersByProduct', () => {
     it('should return an array of users by product', async () => {
       const productId = new Types.ObjectId();
 
-      expect(await controller.getByProduct(productId)).toBe(result);
-      expect(service.getByProduct).toHaveBeenCalledWith(productId);
+      expect(await controller.getUsersByProduct(productId)).toBe(result);
+      expect(service.getUsersByProductId).toHaveBeenCalledWith(productId);
     });
   });
 });

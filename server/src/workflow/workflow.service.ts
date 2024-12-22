@@ -3,7 +3,7 @@ import { BadRequestException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { BaseService } from '../services/base.service';
+import { BaseService } from '../services/base/base.service';
 import { CreateWorkflowDto } from './dto/workflow/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/workflow/update-workflow.dto';
 import { Workflow } from './schemas/workflow.schema';

@@ -1,0 +1,1 @@
+export const PATH_LOGGING = '/app/src/services/logging/logger.log'; 

@@ -10,7 +10,7 @@ import { Workflow, WorkflowDocument } from '../../workflow/schemas/workflow.sche
 
 @Injectable()
 export class ProductTypeValidation implements NestMiddleware {
-
+  
   constructor(
     private dbValidationService: DbValidationService,
     @InjectModel(Category.name) private categoryModel: Model<CategoryDocument>,

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Types } from 'mongoose';
 
 import { BaseController } from './base.controller';
-import { BaseService } from '../services/base.service';
+import { BaseService } from '../services/base/base.service';
 import { mockServiceMethods } from '../test-utils/mock-service';
 
 

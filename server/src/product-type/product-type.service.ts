@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { BaseService } from '../services/base.service';
+import { BaseService } from '../services/base/base.service';
 import { CreateProductTypeDto } from './dto/create-product-type.dto';
 import { ProductType } from './schemas/product-type.schema';
 import { UpdateProductTypeDto } from './dto/update-product-type.dto';

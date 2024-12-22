@@ -6,13 +6,17 @@ export type UserProductRoleDocument = HydratedDocument<UserProductRole>;
 
 @Schema()
 export class UserProductRole {
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true }) userId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+    userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Role', required: true }) roleId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'Role', required: true })
+    roleId: Types.ObjectId;
 
-  @Prop({ required: true }) productId: Types.ObjectId; //TODO ref to Products
+  @Prop({ type: Types.ObjectId, ref: 'Product', required: true })
+    productId: Types.ObjectId;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Workflow' }] }) workflowId: Types.ObjectId[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Workflow' }] })
+    workflowId: Types.ObjectId[];
 }
 
 export const UserProductRoleSchema = SchemaFactory.createForClass(UserProductRole);

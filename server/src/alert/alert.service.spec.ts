@@ -62,6 +62,10 @@ describe('AlertService', () => {
 
       expect(result).toEqual([mockAlert]);
       expect(model.find).toHaveBeenCalledWith({ alertReason: reason });
+      expect(model.populate).toHaveBeenCalledWith({
+        path: 'recipients',
+        model: 'Role',
+      });
     });
   });
 

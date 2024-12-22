@@ -7,7 +7,7 @@ import { ProductTypeService } from './product-type.service';
 import { UpdateProductTypeDto } from './dto/update-product-type.dto';
 
 
-@Controller('productType')
+@Controller('product-type')
 export class ProductTypeController extends BaseController<ProductType, CreateProductTypeDto, UpdateProductTypeDto> {
 
   constructor(private readonly productTypeService: ProductTypeService) {

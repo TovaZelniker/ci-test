@@ -9,7 +9,8 @@ export type RoleDocument = HydratedDocument<Role>;
 @Schema()
 export class Role extends BaseSchema {
 
-  @Prop({ required: true, trim: true }) name: string;
+  @Prop({ required: true, trim: true})
+    name: string;
 
 }
 

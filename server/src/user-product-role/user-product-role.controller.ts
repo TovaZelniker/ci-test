@@ -15,13 +15,13 @@ export class UserProductRoleController extends BaseController<UserProductRole, C
     super(userProductRoleService);
   }
 
-  @Get('/product/:product')
-  async getByProduct(@Param('product') product: Types.ObjectId) {
-    return await this.userProductRoleService.getByProduct(product);
+  @Get('/product/:productId')
+  async getUsersByProduct(@Param('productId') productId: Types.ObjectId) {
+    return await this.userProductRoleService.getUsersByProductId(productId);
   }
 
-  @Get('/user/:user')
-  async getByUser(@Param('user') user: Types.ObjectId) {
-    return await this.userProductRoleService.getByUser(user);
+  @Get('/user/:userId')
+  async getProductsByUser(@Param('userId') userId: Types.ObjectId) {
+    return await this.userProductRoleService.getProductsByUserId(userId);
   }
 }

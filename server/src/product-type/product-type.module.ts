@@ -19,6 +19,7 @@ import { Workflow, WorkflowSchema } from '../workflow/schemas/workflow.schema';
   providers: [ProductTypeService],
 })
 export class ProductTypeModule {
+  
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ProductTypeValidation)

@@ -4,7 +4,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { BaseService } from '../services/base.service';
+import { BaseService } from '../services/base/base.service';
 import { Workflow } from './schemas/workflow.schema';
 import { CreateWorkflowDto } from './dto/workflow/create-workflow.dto';
 import { WorkflowService } from './workflow.service';

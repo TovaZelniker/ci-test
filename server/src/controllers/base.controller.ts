@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { Types } from 'mongoose';
 
-import { BaseService } from '../services/base.service';
+import { BaseService } from '../services/base/base.service';
 
 
 @Controller()

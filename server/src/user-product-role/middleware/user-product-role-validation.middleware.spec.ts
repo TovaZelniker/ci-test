@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { DbValidationService } from '../../validation/db-validation.service';
+import { ProductDocument } from '../../product/schemas/product.schema';
 import { RoleDocument } from '../../role/schemas/role.schema';
 import { UserDocument } from '../../user/schemas/user.schema';
 import { UserProductRoleValidationMiddleware } from './user-product-role-validation.middleware';
@@ -14,16 +15,19 @@ describe('UserProductRoleValidationMiddleware', () => {
   let dbValidationService: DbValidationService;
   let middleware: UserProductRoleValidationMiddleware;
   let userModel: Model<UserDocument>;
+  let productModel: Model<ProductDocument>;
   let roleModel: Model<RoleDocument>;
   let workflowModel = Model<WorkflowDocument>;
 
   const mockUserId = new Types.ObjectId();
+  const mockProductId = new Types.ObjectId();
   const mockRoleId = new Types.ObjectId();
   const mockWorkflowId = [new Types.ObjectId(), new Types.ObjectId()];
 
   const mockRequest = {
     body: {
       userId: mockUserId,
+      productId: mockProductId,
       roleId: mockRoleId,
       workflowId: mockWorkflowId
     },
@@ -44,6 +48,10 @@ describe('UserProductRoleValidationMiddleware', () => {
           useValue: { validateObjectIds: jest.fn() },
         },
         {
+          provide: 'ProductModel',
+          useValue: { find: jest.fn() },
+        },
+        {
           provide: 'RoleModel',
           useValue: { find: jest.fn() },
         },
@@ -60,6 +68,8 @@ describe('UserProductRoleValidationMiddleware', () => {
 
     dbValidationService = module.get<DbValidationService>(DbValidationService);
     middleware = module.get<UserProductRoleValidationMiddleware>(UserProductRoleValidationMiddleware);
+
+    productModel = module.get<Model<ProductDocument>>('ProductModel');
     roleModel = module.get<Model<RoleDocument>>('RoleModel');
     userModel = module.get<Model<UserDocument>>('UserModel');
     workflowModel = module.get<Model<WorkflowDocument>>('WorkflowModel');
@@ -72,16 +82,18 @@ describe('UserProductRoleValidationMiddleware', () => {
     await middleware.use(mockRequest, mockResponse, mockNext);
 
     expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockUserId], userModel, 'userId');
+    expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockProductId], productModel, 'productId');
     expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockRoleId], roleModel, 'roleId');
     expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith(mockWorkflowId, workflowModel, 'workflowId');
-    expect(dbValidationService.validateObjectIds).toHaveBeenCalledTimes(3);
+    expect(dbValidationService.validateObjectIds).toHaveBeenCalledTimes(4);
     expect(mockNext).toHaveBeenCalled();
   });
 
-  it('should skip orderId validation if not provided', async () => {
+  it('should skip workflowId validation if not provided', async () => {
     const mockRequestWithoutworkflowId = {
       body: {
         userId: mockUserId,
+        productId: mockProductId,
         roleId: mockRoleId
       },
     } as Request;
@@ -92,8 +104,9 @@ describe('UserProductRoleValidationMiddleware', () => {
     await middleware.use(mockRequestWithoutworkflowId, mockResponse, mockNext);
 
     expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockUserId], userModel, 'userId');
+    expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockProductId], productModel, 'productId');
     expect(dbValidationService.validateObjectIds).toHaveBeenCalledWith([mockRoleId], roleModel, 'roleId');
-    expect(dbValidationService.validateObjectIds).toHaveBeenCalledTimes(2);
+    expect(dbValidationService.validateObjectIds).toHaveBeenCalledTimes(3);
     expect(mockNext).toHaveBeenCalled();
   });
 
