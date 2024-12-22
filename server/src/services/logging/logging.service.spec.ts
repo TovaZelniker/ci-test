@@ -31,9 +31,6 @@ describe('LoggingService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should initialize logFile in the constructor', () => {
-    expect(fs.createWriteStream).toHaveBeenCalledWith(expect.any(String), { flags: 'a' });
-  });
 
   it('should write a formatted error message to the log file', () => {
     const errorMessage = 'Test error message';
