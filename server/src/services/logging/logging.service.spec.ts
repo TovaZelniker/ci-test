@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { LoggingService } from './logging.service';
 import * as fs from 'fs';
 import * as util from 'util';
+import { PATH_LOGGING } from '../../utils/constants';
+
 
 jest.mock('fs');
 
@@ -31,6 +33,9 @@ describe('LoggingService', () => {
     expect(service).toBeDefined();
   });
 
+  it('should initialize logFile in the constructor', () => {
+    expect(fs.createWriteStream).toHaveBeenCalledWith(PATH_LOGGING, { flags: 'a' });
+  });
 
   it('should write a formatted error message to the log file', () => {
     const errorMessage = 'Test error message';
